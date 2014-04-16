@@ -9,6 +9,12 @@ try:
 except ImportError:
     from urllib.parse import urlencode
 
+def encode_dict(params):
+    result = {}
+    for k, v in params.iteritems():
+        result[k] = unicode(v).encode('utf-8')
+    return result
+
 
 class Alipay(object):
 
@@ -39,7 +45,7 @@ class Alipay(object):
         params.update({'sign_type': 'MD5',
                        'sign': self._generate_sign(params)})
 
-        return '%s?%s' % (self.GATEWAY_URL, urlencode(params))
+        return '%s?%s' % (self.GATEWAY_URL, urlencode(encode_dict(params)))
 
     def create_direct_pay_by_user_url(self, **kw):
         '''即时到帐'''
